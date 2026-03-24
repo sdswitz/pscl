@@ -32,7 +32,7 @@ importFrom("grDevices", "dev.interactive", "gray", "rainbow")
 importFrom("graphics", "abline", "axis", "layout", "legend", "lines",
            "mtext", "pairs", "par", "plot", "points", "polygon", "rug",
            "text", "title")
-importFrom("stats", ".getXlevels", "AIC", "binomial", "coef", "cor",
+importFrom("stats", ".getXlevels", "AIC", "anova", "binomial", "coef", "cor",
            "dbeta", "delete.response", "density", "dnbinom", "dpois",
            "family", "glm", "glm.fit", "lm", "loess", "logLik",
            "lm.wfit",
@@ -59,6 +59,7 @@ importFrom("utils", "tail")
   S3method("terms", "zeroinfl")
   S3method("model.matrix", "zeroinfl")
   S3method("extractAIC", "zeroinfl")
+  S3method("anova", "zeroinfl")
 
 ## methods for class hurdle
   S3method("print", "hurdle")
@@ -67,6 +68,7 @@ importFrom("utils", "tail")
   S3method("coef", "hurdle")
   S3method("vcov", "hurdle")
   S3method("logLik", "hurdle")
+  S3method("anova", "hurdle")
   S3method("predict", "hurdle")
   S3method("residuals", "hurdle")
   S3method("fitted", "hurdle")
