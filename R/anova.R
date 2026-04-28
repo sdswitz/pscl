@@ -1,5 +1,8 @@
-anova.zeroinfl <- function(object, ..., test = c("Chisq", "none")) {
-  test <- match.arg(test)
+anova.zeroinfl <- function(object, ..., test = c("Chisq", "none", "LRT")) {
+  if (is.null(test)) test <- "Chisq"
+  else if (isFALSE(test)) test <- "none"
+  else test <- match.arg(test)
+  if (test == "LRT") test <- "Chisq"
   models <- list(object, ...)
   if (length(models) < 2L) {
     stop("anova.zeroinfl() currently supports only multi-model comparisons: anova(m1, m2, ...).")
@@ -8,6 +11,11 @@ anova.zeroinfl <- function(object, ..., test = c("Chisq", "none")) {
   # Basic class check
   bad <- !vapply(models, inherits, logical(1), what = "zeroinfl")
   if (any(bad)) stop("All models must be of class 'zeroinfl'.")
+
+  responses <- vapply(models, function(x) paste(deparse(formula(x)[[2L]]), collapse = "\n"), character(1))
+  if (!all(responses == responses[1L])) {
+    stop("Models must have the same response.")
+  }
   
   # Extract logLik objects (pscl provides logLik.zeroinfl with df and nobs attrs)
   ll <- lapply(models, logLik)
@@ -94,8 +102,11 @@ anova.zeroinfl <- function(object, ..., test = c("Chisq", "none")) {
   structure(tab, heading = heading, class = c("anova", "data.frame"))
 }
 
-anova.hurdle <- function(object, ..., test = c("Chisq", "none")) {
-  test <- match.arg(test)
+anova.hurdle <- function(object, ..., test = c("Chisq", "none", "LRT")) {
+  if (is.null(test)) test <- "Chisq"
+  else if (isFALSE(test)) test <- "none"
+  else test <- match.arg(test)
+  if (test == "LRT") test <- "Chisq"
   models <- list(object, ...)
   if (length(models) < 2L) {
     stop("anova.hurdle() currently supports only multi-model comparisons: anova(m1, m2, ...).")
@@ -104,6 +115,11 @@ anova.hurdle <- function(object, ..., test = c("Chisq", "none")) {
   # Basic class check
   bad <- !vapply(models, inherits, logical(1), what = "hurdle")
   if (any(bad)) stop("All models must be of class 'hurdle'.")
+
+  responses <- vapply(models, function(x) paste(deparse(formula(x)[[2L]]), collapse = "\n"), character(1))
+  if (!all(responses == responses[1L])) {
+    stop("Models must have the same response.")
+  }
 
   # Extract logLik objects (pscl provides logLik.hurdle with df and nobs attrs)
   ll <- lapply(models, logLik)

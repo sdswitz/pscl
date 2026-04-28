@@ -11,8 +11,8 @@
 }
 
 \usage{
-\method{anova}{zeroinfl}(object, \dots, test = c("Chisq", "none"))
-\method{anova}{hurdle}(object, \dots, test = c("Chisq", "none"))
+\method{anova}{zeroinfl}(object, \dots, test = c("Chisq", "none", "LRT"))
+\method{anova}{hurdle}(object, \dots, test = c("Chisq", "none", "LRT"))
 }
 
 \arguments{
@@ -21,8 +21,9 @@
     typically the result of calls to \code{\link{zeroinfl}} or
     \code{\link{hurdle}}. At least two models must be supplied.}
   \item{test}{a character string specifying the test statistic to be
-    computed. Either \code{"Chisq"} (the default) for a likelihood ratio
-    chi-squared test, or \code{"none"} to suppress the test.}
+    computed. Either \code{"Chisq"} (the default) or \code{"LRT"} for a
+    likelihood ratio chi-squared test, or \code{"none"} or \code{FALSE}
+    to suppress the test. \code{NULL} is treated as the default.}
 }
 
 \details{
@@ -46,11 +47,12 @@
   if the supplied models do not appear to be nested in this sense, or
   if the resulting likelihood ratio statistic is negative.
 
-  All models must be fit to the same number of observations; an error
-  is raised otherwise. This may be a problem if there are missing
-  values and R's default of \code{na.action = na.omit} is used.
+  All models must have the same response and be fit to the same number
+  of observations; an error is raised otherwise. This may be a problem
+  if there are missing values and R's default of \code{na.action =
+  na.omit} is used.
 
-  With \code{test = "Chisq"}, p-values are computed from the
+  With \code{test = "Chisq"} or \code{test = "LRT"}, p-values are computed from the
   chi-squared distribution with degrees of freedom equal to the
   difference in the number of estimated parameters between successive
   models.
